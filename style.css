@@ -1,0 +1,954 @@
+@import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@500;700;800&family=Share+Tech+Mono&display=swap');
+
+:root {
+    color-scheme: light;
+    --red: #e53935;
+    --red-dark: #9e1b1b;
+    --yellow: #ffd83d;
+    --blue-screen: #8bd6ff;
+    --blue-dark: #1769aa;
+    --ink: #171717;
+    --plastic: #f7f0d2;
+    --pixel-shadow: #c9b98a;
+}
+
+* {
+    box-sizing: border-box;
+}
+
+body {
+    min-height: 100vh;
+    margin: 0;
+    padding: 32px 20px 64px;
+    background: #ffffff;
+    color: var(--ink);
+    font-family: 'Press Start 2P', 'Courier New', monospace;
+}
+
+.calculator {
+    width: min(100%, 560px);
+    position: relative;
+    top: auto;
+    left: auto;
+    margin: 0 auto;
+    padding: 14px;
+    background: var(--plastic);
+    border: 4px solid var(--ink);
+    border-radius: 8px;
+    box-shadow: 6px 6px 0 var(--red-dark), 12px 12px 0 rgba(158, 27, 27, 0.2);
+}
+
+.ds-screen {
+    padding: 16px;
+    border: 4px solid var(--ink);
+    border-radius: 4px;
+    box-shadow: inset 3px 3px 0 rgba(76, 29, 149, 0.16);
+}
+
+.ds-screen-top {
+    background: var(--blue-screen);
+}
+
+.ds-screen-bottom {
+    background: var(--yellow);
+}
+
+.nutrition-result {
+    min-height: 132px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: 18px;
+    text-align: center;
+}
+
+.calorie-result,
+.macro-results > div {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.result-label,
+.result-unit {
+    color: var(--ink);
+    font-size: 0.5rem;
+    line-height: 1.5;
+    text-transform: uppercase;
+}
+
+.result-label {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.calorie-result strong {
+    color: var(--red-dark);
+    font-size: 1.45rem;
+}
+
+.macro-results {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+}
+
+.macro-results > div {
+    padding: 10px 4px;
+    border: 2px solid var(--ink);
+    background: #ffffff;
+}
+
+.macro-results strong {
+    color: var(--red);
+    font-size: 1rem;
+}
+
+.additional-results {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 8px;
+}
+
+.additional-results > div {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+    min-height: 62px;
+    padding: 8px 4px;
+    border: 2px solid var(--ink);
+    background: #ffffff;
+}
+
+.additional-results strong {
+    color: var(--red-dark);
+    font-size: 0.72rem;
+}
+
+.additional-results .result-label,
+.additional-results .result-unit {
+    font-size: 0.4rem;
+}
+
+.steps-result {
+    grid-column: span 3;
+}
+
+.ds-hinge {
+    height: 12px;
+    margin: 8px 18px;
+    border-top: 4px solid var(--ink);
+    border-bottom: 4px solid var(--ink);
+    background: var(--red);
+}
+
+.calculator-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    cursor: grab;
+    margin-bottom: 12px;
+    color: var(--red-dark);
+    font-size: 0.72rem;
+    font-weight: bold;
+    user-select: none;
+    touch-action: none;
+}
+
+.calculator-header:active {
+    cursor: grabbing;
+}
+
+.calculator-dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 0;
+    background: var(--red);
+    box-shadow: 3px 3px 0 var(--red-dark);
+}
+
+.display {
+    display: block;
+    width: 100%;
+    min-height: 84px;
+    overflow: hidden;
+    padding: 12px 8px;
+    color: var(--red-dark);
+    font-family: 'Press Start 2P', 'Courier New', monospace;
+    font-size: clamp(1.35rem, 7vw, 2.1rem);
+    line-height: 1.25;
+    text-align: right;
+    white-space: nowrap;
+}
+
+.keypad {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 8px;
+}
+
+.key {
+    min-height: 54px;
+    border: 3px solid var(--ink);
+    border-radius: 3px;
+    background: var(--red);
+    color: #ffffff;
+    cursor: pointer;
+    font: inherit;
+    font-size: 1rem;
+    text-shadow: 2px 2px 0 var(--red-dark);
+    box-shadow: 3px 3px 0 var(--red-dark);
+    transition: transform 120ms ease, background 120ms ease, box-shadow 120ms ease;
+}
+
+.key:hover,
+.key:focus-visible {
+    background: var(--red-dark);
+}
+
+.key:active {
+    transform: translate(2px, 2px);
+    box-shadow: 1px 1px 0 var(--red-dark);
+}
+
+.key-secondary {
+    background: #fff3a6;
+    color: var(--ink);
+    text-shadow: none;
+}
+
+.key-operator,
+.key-equals {
+    background: var(--blue-dark);
+}
+
+.key-zero {
+    grid-column: span 2;
+}
+
+@media (max-width: 380px) {
+    body {
+        padding: 20px 12px 48px;
+    }
+
+    .calculator {
+        padding: 16px;
+    }
+
+    .ds-screen {
+        padding: 12px;
+    }
+
+    .additional-results {
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+    .steps-result {
+        grid-column: span 2;
+    }
+}
+
+.nutrition-form {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.form-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+}
+
+.nutrition-form label {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    color: var(--ink);
+    font-size: 0.48rem;
+    line-height: 1.5;
+    text-transform: uppercase;
+}
+
+.nutrition-form input,
+.nutrition-form select {
+    width: 100%;
+    min-height: 38px;
+    padding: 6px;
+    border: 2px solid var(--ink);
+    border-radius: 2px;
+    outline: 0;
+    background: #ffffff;
+    color: var(--ink);
+    font: 0.7rem 'Courier New', monospace;
+}
+
+.nutrition-form input:focus,
+.nutrition-form select:focus {
+    box-shadow: 3px 3px 0 var(--red);
+}
+
+.calculate-button {
+    min-height: 42px;
+    margin-top: 3px;
+    border: 3px solid var(--ink);
+    border-radius: 3px;
+    background: var(--red);
+    color: #ffffff;
+    cursor: pointer;
+    font: 0.62rem 'Press Start 2P', 'Courier New', monospace;
+    box-shadow: 3px 3px 0 var(--red-dark);
+    text-shadow: 2px 2px 0 var(--red-dark);
+}
+
+.calculate-button:hover,
+.calculate-button:focus-visible {
+    background: var(--red-dark);
+}
+
+.calculate-button:active {
+    transform: translate(2px, 2px);
+    box-shadow: 1px 1px 0 var(--red-dark);
+}
+
+.form-note {
+    margin: 12px 0 0;
+    color: var(--ink);
+    font: 0.42rem/1.6 'Courier New', monospace;
+    text-align: center;
+}
+
+/* Cyberpunk interface layer */
+:root {
+    color-scheme: dark;
+    --red: #ff2c9c;
+    --red-dark: #9b1765;
+    --yellow: #f5f000;
+    --blue-screen: #0a2029;
+    --blue-dark: #008fa3;
+    --ink: #d8faff;
+    --plastic: #111824;
+    --pixel-shadow: #26394d;
+    --cyan: #00f0ff;
+    --muted: #80a8b5;
+}
+
+body {
+    padding: 42px 20px 72px;
+    background-color: #080b12;
+    background-image: linear-gradient(rgba(0, 240, 255, 0.06) 1px, transparent 1px), linear-gradient(90deg, rgba(0, 240, 255, 0.06) 1px, transparent 1px);
+    background-size: 32px 32px;
+    color: var(--ink);
+    font-family: 'Share Tech Mono', 'Courier New', monospace;
+}
+
+.calculator {
+    width: min(100%, 620px);
+    padding: 18px;
+    background: var(--plastic);
+    border: 1px solid var(--cyan);
+    border-radius: 0;
+    clip-path: polygon(0 12px, 12px 0, calc(100% - 12px) 0, 100% 12px, 100% calc(100% - 12px), calc(100% - 12px) 100%, 12px 100%, 0 calc(100% - 12px));
+    box-shadow: 0 0 0 1px rgba(0, 240, 255, 0.15), 0 0 34px rgba(0, 240, 255, 0.14);
+}
+
+.ds-screen {
+    padding: 18px;
+    border: 1px solid var(--pixel-shadow);
+    border-radius: 0;
+    background: #111824;
+    box-shadow: inset 0 0 28px rgba(0, 0, 0, 0.3);
+}
+
+.ds-screen-top {
+    background-color: var(--blue-screen);
+    background-image: linear-gradient(rgba(0, 240, 255, 0.07) 1px, transparent 1px);
+    background-size: 100% 8px;
+}
+
+.ds-screen-bottom {
+    background: #111824;
+}
+
+.ds-hinge {
+    height: 14px;
+    margin: 10px 24px;
+    border-top: 1px solid var(--blue-dark);
+    border-bottom: 1px solid var(--blue-dark);
+    background: repeating-linear-gradient(90deg, #182536 0 18px, var(--blue-dark) 18px 20px);
+}
+
+.calculator-header {
+    margin-bottom: 14px;
+    padding-bottom: 10px;
+    border-bottom: 1px solid var(--blue-dark);
+    color: var(--cyan);
+    font-family: 'Orbitron', sans-serif;
+    font-size: 0.7rem;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+}
+
+.calculator-label::before {
+    content: '// ';
+    color: var(--yellow);
+}
+
+.calculator-dot {
+    width: 9px;
+    height: 9px;
+    border-radius: 0;
+    background: var(--yellow);
+    box-shadow: 0 0 10px var(--yellow);
+}
+
+.result-label,
+.result-unit {
+    color: var(--muted);
+}
+
+.calorie-result strong {
+    color: var(--yellow);
+    font-family: 'Orbitron', sans-serif;
+    text-shadow: 0 0 14px rgba(245, 240, 0, 0.35);
+}
+
+.macro-results > div,
+.additional-results > div {
+    border: 1px solid var(--pixel-shadow);
+    border-radius: 0;
+    background: rgba(8, 11, 18, 0.5);
+}
+
+.macro-results strong,
+.additional-results strong {
+    color: var(--cyan);
+    font-family: 'Orbitron', sans-serif;
+}
+
+.nutrition-form label {
+    color: var(--cyan);
+}
+
+.nutrition-form input,
+.nutrition-form select {
+    min-height: 42px;
+    border: 1px solid var(--pixel-shadow);
+    border-bottom: 2px solid var(--blue-dark);
+    border-radius: 0;
+    background: #0a1019;
+    color: var(--ink);
+    font: 0.78rem 'Share Tech Mono', monospace;
+}
+
+.nutrition-form input:focus,
+.nutrition-form select:focus {
+    border-color: var(--cyan);
+    box-shadow: 0 0 12px rgba(0, 240, 255, 0.2);
+}
+
+.calculate-button {
+    min-height: 48px;
+    border: 1px solid var(--yellow);
+    border-radius: 0;
+    background: var(--yellow);
+    color: #080b12;
+    font: 700 0.65rem 'Orbitron', sans-serif;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    box-shadow: 4px 4px 0 var(--red);
+    text-shadow: none;
+}
+
+.calculate-button:hover,
+.calculate-button:focus-visible {
+    background: #ffffff;
+}
+
+.calculate-button:active {
+    box-shadow: 1px 1px 0 var(--red);
+}
+
+.form-note {
+    color: var(--muted);
+    font: 0.55rem/1.6 'Share Tech Mono', monospace;
+}
+
+/* High-contrast readability */
+.calculator {
+    border-width: 2px;
+}
+
+.ds-screen {
+    border-width: 2px;
+}
+
+.calculator-header {
+    border-bottom-width: 2px;
+    font-size: 0.86rem;
+}
+
+.result-label,
+.result-unit {
+    color: #e4fcff;
+    font-size: 0.72rem;
+    font-weight: 700;
+}
+
+.calorie-result strong {
+    font-size: 2.2rem;
+}
+
+.macro-results > div,
+.additional-results > div,
+.food-guide-grid > div {
+    border-width: 2px;
+}
+
+.macro-results strong,
+.additional-results strong {
+    font-size: 1.35rem;
+}
+
+.additional-results .result-label,
+.additional-results .result-unit {
+    color: #d3f8fc;
+    font-size: 0.62rem;
+}
+
+.result-description {
+    color: #b9eaf0;
+    font-size: 0.62rem;
+}
+
+.nutrition-form label {
+    color: #7cfcff;
+    font-size: 0.7rem;
+}
+
+.nutrition-form input,
+.nutrition-form select {
+    border-width: 2px;
+    border-bottom-width: 3px;
+    font-size: 1.05rem;
+}
+
+.calculate-button {
+    border-width: 2px;
+    font-size: 0.84rem;
+}
+
+.form-note,
+.food-guide-grid p {
+    color: #d3f8fc;
+    font-size: 0.68rem;
+}
+
+.food-guide h2 {
+    font-size: 0.95rem;
+}
+
+.food-guide-grid strong {
+    font-size: 0.78rem;
+}
+
+/* Larger overall layout */
+.calculator {
+    width: min(100%, 760px);
+    padding: 24px;
+}
+
+.ds-screen {
+    padding: 26px;
+}
+
+.ds-hinge {
+    height: 18px;
+    margin: 14px 34px;
+}
+
+.calculator-header {
+    margin-bottom: 20px;
+    padding-bottom: 14px;
+    font-size: 1.05rem;
+}
+
+.nutrition-result {
+    min-height: 180px;
+    gap: 24px;
+}
+
+.result-label,
+.result-unit {
+    font-size: 0.86rem;
+}
+
+.calorie-result strong {
+    font-size: 2.8rem;
+}
+
+.macro-results,
+.additional-results,
+.food-guide-grid {
+    gap: 16px;
+}
+
+.macro-results > div,
+.additional-results > div,
+.food-guide-grid > div {
+    padding: 16px 10px;
+}
+
+.macro-results strong,
+.additional-results strong {
+    font-size: 1.65rem;
+}
+
+.additional-results > div {
+    min-height: 92px;
+}
+
+.additional-results .result-label,
+.additional-results .result-unit {
+    font-size: 0.74rem;
+}
+
+.result-description {
+    font-size: 0.76rem;
+}
+
+.nutrition-form {
+    gap: 16px;
+}
+
+.form-row {
+    gap: 16px;
+}
+
+.nutrition-form label {
+    gap: 9px;
+    font-size: 0.82rem;
+}
+
+.nutrition-form input,
+.nutrition-form select {
+    min-height: 52px;
+    padding: 10px;
+    font-size: 1.2rem;
+}
+
+.calculate-button {
+    min-height: 58px;
+    margin-top: 8px;
+    font-size: 0.96rem;
+}
+
+.form-note,
+.food-guide-grid p {
+    font-size: 0.82rem;
+}
+
+.food-guide {
+    margin-top: 24px;
+    padding-top: 18px;
+}
+
+.food-guide h2 {
+    margin-bottom: 16px;
+    font-size: 1.1rem;
+}
+
+.food-guide-grid strong {
+    font-size: 0.92rem;
+}
+
+.result-description {
+    display: block;
+    color: #78aab4;
+    font: 0.52rem/1.45 'Share Tech Mono', monospace;
+}
+
+.food-guide {
+    margin-top: 20px;
+    padding-top: 14px;
+    border-top: 1px solid var(--blue-dark);
+}
+
+.food-guide h2 {
+    margin: 0 0 12px;
+    color: var(--yellow);
+    font: 700 0.8rem 'Orbitron', sans-serif;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+}
+
+.food-guide-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 10px;
+}
+
+.food-guide-grid > div {
+    padding: 11px;
+    border: 1px solid var(--pixel-shadow);
+    background: rgba(8, 11, 18, 0.55);
+}
+
+.food-guide-grid strong {
+    color: var(--cyan);
+    font: 700 0.68rem 'Orbitron', sans-serif;
+}
+
+.food-guide-grid p {
+    margin: 8px 0 0;
+    color: #b9eaf0;
+    font: 0.64rem/1.55 'Share Tech Mono', monospace;
+}
+
+@media (max-width: 480px) {
+    body {
+        padding: 24px 10px 48px;
+    }
+
+    .calculator {
+        padding: 12px;
+    }
+
+    .ds-screen {
+        padding: 12px;
+    }
+
+    .calculator {
+        padding: 14px;
+    }
+
+    .nutrition-result {
+        gap: 16px;
+    }
+
+    .result-label,
+    .result-unit {
+        font-size: 0.7rem;
+    }
+
+    .calorie-result strong {
+        font-size: 2.1rem;
+    }
+
+    .macro-results strong,
+    .additional-results strong {
+        font-size: 1.25rem;
+    }
+
+    .result-description {
+        font-size: 0.64rem;
+    }
+
+    .nutrition-form input,
+    .nutrition-form select {
+        font-size: 1rem;
+    }
+
+
+/* Extra-large typography */
+.calculator-header {
+    font-size: 1.2rem;
+}
+
+.result-label,
+.result-unit {
+    font-size: 1rem;
+}
+
+.calorie-result strong {
+    font-size: 3.2rem;
+}
+
+.macro-results strong,
+.additional-results strong {
+    font-size: 1.9rem;
+}
+
+.additional-results .result-label,
+.additional-results .result-unit {
+    font-size: 0.86rem;
+}
+
+.result-description {
+    font-size: 0.92rem;
+}
+
+.nutrition-form label {
+    font-size: 0.96rem;
+}
+
+.nutrition-form input,
+.nutrition-form select {
+    font-size: 1.35rem;
+}
+
+.calculate-button {
+    font-size: 1.08rem;
+}
+
+.form-note,
+.food-guide-grid p {
+    font-size: 0.94rem;
+}
+
+.food-guide h2 {
+    font-size: 1.3rem;
+}
+
+.food-guide-grid strong {
+    font-size: 1.08rem;
+}
+
+@media (max-width: 480px) {
+    .calculator-header {
+        font-size: 0.98rem;
+    }
+
+    .result-label,
+    .result-unit {
+        font-size: 0.82rem;
+    }
+
+    .calorie-result strong {
+        font-size: 2.5rem;
+    }
+
+    .macro-results strong,
+    .additional-results strong {
+        font-size: 1.5rem;
+    }
+
+    .additional-results .result-label,
+    .additional-results .result-unit,
+    .result-description {
+        font-size: 0.7rem;
+    }
+
+    .nutrition-form label {
+        font-size: 0.82rem;
+    }
+
+    .nutrition-form input,
+    .nutrition-form select {
+        font-size: 1.1rem;
+    }
+
+    .calculate-button {
+        font-size: 0.92rem;
+    }
+
+    .form-note,
+    .food-guide-grid p {
+        font-size: 0.78rem;
+    }
+}
+    .food-guide-grid {
+        grid-template-columns: 1fr;
+    }
+}
+
+/* Readability pass */
+.calculator-header {
+    font-size: 0.9rem;
+}
+
+.result-label,
+.result-unit {
+    color: #b9eaf0;
+    font-size: 0.68rem;
+    font-weight: 700;
+}
+
+.calorie-result strong {
+    font-size: 2rem;
+}
+
+.macro-results strong,
+.additional-results strong {
+    font-size: 1.25rem;
+}
+
+.additional-results .result-label,
+.additional-results .result-unit {
+    font-size: 0.58rem;
+}
+
+.nutrition-form label {
+    color: #62f6ff;
+    font-size: 0.62rem;
+    font-weight: 700;
+}
+
+.nutrition-form input,
+.nutrition-form select {
+    font-size: 1rem;
+}
+
+.calculate-button {
+    font-size: 0.78rem;
+}
+
+.form-note {
+    color: #b9eaf0;
+    font-size: 0.68rem;
+}
+
+/* Final type scale */
+.calculator-header {
+    font-size: 1.09rem !important;
+}
+
+.result-label,
+.result-unit {
+    font-size: 0.92rem !important;
+}
+
+.calorie-result strong {
+    font-size: 2.97rem !important;
+}
+
+.macro-results strong,
+.additional-results strong {
+    font-size: 1.75rem !important;
+}
+
+.additional-results .result-label,
+.additional-results .result-unit {
+    font-size: 0.78rem !important;
+}
+
+.result-description {
+    font-size: 0.86rem !important;
+}
+
+.nutrition-form label {
+    font-size: 0.87rem !important;
+}
+
+.nutrition-form input,
+.nutrition-form select {
+    font-size: 1.22rem !important;
+}
+
+.calculate-button {
+    font-size: 0.98rem !important;
+}
+
+.form-note,
+.food-guide-grid p {
+    font-size: 0.87rem !important;
+}
+
+.food-guide h2 {
+    font-size: 1.22rem !important;
+}
+
+.food-guide-grid strong {
+    font-size: 1.01rem !important;
+}
