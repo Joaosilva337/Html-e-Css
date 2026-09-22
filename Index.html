@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="style.css">
+    <title>Calculadora</title>
+</head>
+<body>
+    <main class="calculator" aria-label="Calculadora">
+        <div class="ds-screen ds-screen-top">
+            <div class="calculator-header">
+                <span class="calculator-label">Meta diária</span>
+                <span class="calculator-dot" aria-hidden="true"></span>
+            </div>
+            <div class="nutrition-result" aria-live="polite">
+                <div class="calorie-result">
+                    <span class="result-label">Calorias</span>
+                    <strong id="calories">--</strong>
+                    <span class="result-unit">kcal / dia</span>
+                    <span class="result-description">Energia estimada para o seu objetivo.</span>
+                </div>
+                <div class="macro-results">
+                    <div>
+                        <span class="result-label">Proteínas</span>
+                        <strong id="protein">--</strong>
+                        <span class="result-unit">g</span>
+                        <span class="result-description">Ajuda na recuperação e manutenção muscular.</span>
+                    </div>
+                    <div>
+                        <span class="result-label">Carboidratos</span>
+                        <strong id="carbs">--</strong>
+                        <span class="result-unit">g</span>
+                        <span class="result-description">Principal fonte de energia do corpo.</span>
+                    </div>
+                </div>
+                <div class="additional-results">
+                    <div>
+                        <span class="result-label">Água</span>
+                        <strong id="water">--</strong>
+                        <span class="result-unit">litros / dia</span>
+                        <span class="result-description">Hidratação média diária.</span>
+                    </div>
+                    <div>
+                        <span class="result-label">Fibras</span>
+                        <strong id="fiber">--</strong>
+                        <span class="result-unit">g / dia</span>
+                        <span class="result-description">Favorece o intestino e a saciedade.</span>
+                    </div>
+                    <div>
+                        <span class="result-label">IMC</span>
+                        <strong id="bmi">--</strong>
+                        <span class="result-unit">kg / m²</span>
+                        <span class="result-description">Relação entre peso e altura.</span>
+                    </div>
+                    <div>
+                        <span class="result-label">TMB</span>
+                        <strong id="bmr">--</strong>
+                        <span class="result-unit">kcal / dia</span>
+                        <span class="result-description">Energia gasta pelo corpo em repouso.</span>
+                    </div>
+                    <div class="steps-result">
+                        <span class="result-label">Passos p/ emagrecer</span>
+                        <strong id="steps">--</strong>
+                        <span class="result-unit">passos / dia</span>
+                        <span class="result-description">Faixa prática de movimento diário.</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="ds-hinge" aria-hidden="true"></div>
+        <div class="ds-screen ds-screen-bottom">
+            <form class="nutrition-form" id="nutrition-form">
+                <div class="form-row">
+                    <label>
+                        Peso (kg)
+                        <input id="weight" name="weight" type="number" min="20" max="300" step="0.1" placeholder="70" required>
+                    </label>
+                    <label>
+                        Altura (cm)
+                        <input id="height" name="height" type="number" min="100" max="250" step="1" placeholder="175" required>
+                    </label>
+                </div>
+                <div class="form-row">
+                    <label>
+                        Idade
+                        <input id="age" name="age" type="number" min="14" max="100" step="1" placeholder="25" required>
+                    </label>
+                    <label>
+                        Sexo
+                        <select id="sex" name="sex">
+                            <option value="male">Masculino</option>
+                            <option value="female">Feminino</option>
+                        </select>
+                    </label>
+                </div>
+                <label>
+                    Nível de atividade
+                    <select id="activity" name="activity">
+                        <option value="1.2">Sedentário</option>
+                        <option value="1.375">Levemente ativo</option>
+                        <option value="1.55" selected>Moderadamente ativo</option>
+                        <option value="1.725">Muito ativo</option>
+                        <option value="1.9">Atleta</option>
+                    </select>
+                </label>
+                <label>
+                    Objetivo
+                    <select id="goal" name="goal">
+                        <option value="lose">Emagrecer</option>
+                        <option value="maintain" selected>Manter peso</option>
+                        <option value="gain">Ganhar peso</option>
+                    </select>
+                </label>
+                <button class="calculate-button" type="submit">Calcular metas</button>
+            </form>
+            <p class="form-note" id="form-note">Estimativa para manutenção de peso.</p>
+            <section class="food-guide" aria-labelledby="food-guide-title">
+                <h2 id="food-guide-title">Boas escolhas</h2>
+                <div class="food-guide-grid">
+                    <div>
+                        <strong>Fibras</strong>
+                        <p>Feijão, lentilha, aveia, chia, frutas com casca e verduras.</p>
+                    </div>
+                    <div>
+                        <strong>Carboidratos</strong>
+                        <p>Arroz integral, batata, mandioca, milho, quinoa e frutas.</p>
+                    </div>
+                    <div>
+                        <strong>Proteínas</strong>
+                        <p>Frango, ovos, peixe, carnes magras, iogurte e feijão.</p>
+                    </div>
+                </div>
+            </section>
+                </div>
+    </main>
+    <script>
+        const nutritionForm = document.querySelector('#nutrition-form');
+
+        nutritionForm.addEventListener('submit', (event) => {
+            event.preventDefault();
+            const weight = Number(document.querySelector('#weight').value);
+            const height = Number(document.querySelector('#height').value);
+            const age = Number(document.querySelector('#age').value);
+            const sex = document.querySelector('#sex').value;
+            const activity = Number(document.querySelector('#activity').value);
+            const goal = document.querySelector('#goal').value;
+            const basalRate = sex === 'male'
+                ? (10 * weight) + (6.25 * height) - (5 * age) + 5
+                : (10 * weight) + (6.25 * height) - (5 * age) - 161;
+            const maintenanceCalories = basalRate * activity;
+            const calorieAdjustment = { lose: 0.8, maintain: 1, gain: 1.15 }[goal];
+            const calories = Math.round(maintenanceCalories * calorieAdjustment);
+            const protein = Math.round(weight * (goal === 'maintain' ? 1.6 : 1.8));
+            const fat = weight * 0.8;
+            const carbs = Math.max(0, Math.round((calories - (protein * 4) - (fat * 9)) / 4));
+            const bmi = weight / ((height / 100) ** 2);
+            const water = weight * 0.035;
+            const fiber = Math.round((calories / 1000) * 14);
+            const goalNotes = {
+                lose: 'Estimativa com déficit calórico moderado.',
+                maintain: 'Estimativa para manutenção de peso.',
+                gain: 'Estimativa com superávit calórico moderado.'
+            };
+
+            document.querySelector('#calories').textContent = calories;
+            document.querySelector('#protein').textContent = protein;
+            document.querySelector('#carbs').textContent = carbs;
+            document.querySelector('#water').textContent = water.toFixed(1);
+            document.querySelector('#fiber').textContent = fiber;
+            document.querySelector('#bmi').textContent = bmi.toFixed(1);
+            document.querySelector('#bmr').textContent = Math.round(basalRate);
+            document.querySelector('#steps').textContent = '8-10 mil';
+            document.querySelector('#form-note').textContent = goalNotes[goal];
+        });
+
+        const calculator = document.querySelector('.calculator');
+        const calculatorHeader = document.querySelector('.calculator-header');
+        let dragOffsetX = 0;
+        let dragOffsetY = 0;
+        let dragStartLeft = 0;
+        let dragStartTop = 0;
+        let dragStartPointerX = 0;
+        let dragStartPointerY = 0;
+
+        calculatorHeader.addEventListener('pointerdown', (event) => {
+            const bounds = calculator.getBoundingClientRect();
+            dragOffsetX = event.clientX - bounds.left;
+            dragOffsetY = event.clientY - bounds.top;
+            calculator.style.transform = 'none';
+            dragStartLeft = parseFloat(calculator.style.left) || 0;
+            dragStartTop = parseFloat(calculator.style.top) || 0;
+            dragStartPointerX = event.clientX;
+            dragStartPointerY = event.clientY;
+            calculatorHeader.setPointerCapture(event.pointerId);
+        });
+
+        calculatorHeader.addEventListener('pointermove', (event) => {
+            if (!calculatorHeader.hasPointerCapture(event.pointerId)) return;
+            const left = dragStartLeft + event.clientX - dragStartPointerX;
+            const top = dragStartTop + event.clientY - dragStartPointerY;
+            calculator.style.left = `${left}px`;
+            calculator.style.top = `${top}px`;
+        });
+
+        calculatorHeader.addEventListener('pointerup', (event) => {
+            calculatorHeader.releasePointerCapture(event.pointerId);
+        });
+    </script>
+</body>
+</html>
